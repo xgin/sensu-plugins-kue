@@ -14,9 +14,9 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/xgin/sensu-plugins-kue"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.files         = Dir.glob("lib/**/*")
   spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.executables   = Dir.glob("bin/*").map{ |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "sensu-plugin", "~> 1.2"
