@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
   spec.files         = Dir.glob("lib/**/*")
   spec.bindir        = "exe"
-  spec.executables   = Dir.glob("bin/*").map{ |f| File.basename(f) }
+  spec.executables   = Dir.glob("exe/*").map{ |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "sensu-plugin", "~> 1.2"
