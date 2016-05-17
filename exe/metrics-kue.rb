@@ -1,9 +1,14 @@
 #! /usr/bin/env ruby
 
 require "sensu-plugin/metric/cli"
+require "socket"
 require "redis"
 
-class KueMetric < Sensu::Plugin::Metric::CLI::JSON
+class KueMetrics < Sensu::Plugin::Metric::CLI::Graphite
+  option :scheme,
+         long: "--scheme SCHEME",
+         description: "Metric naming scheme, text to prepend to $queue_type"
+         default: "#{Socket.gethostname}.kue"
 
   option :prefix,
          short: "-q PREFIX",
@@ -33,8 +38,10 @@ class KueMetric < Sensu::Plugin::Metric::CLI::JSON
 
   def run
     redis = Redis.new(config)
-    types = ['complete', 'failed', 'inactive', 'active', 'delayed']
-    ok types.map{ |type| [type, redis.zcard("#{config[:prefix]}:jobs:#{type}")] }.to_h
+    ['complete', 'failed', 'inactive', 'active', 'delayed'].each do |type|
+      output "#{config[:scheme]}.#{type}", redis.zcard("#{config[:prefix]}:jobs:#{type}")
+    end
+    ok
   end
 
 end
