@@ -7,7 +7,7 @@ require "redis"
 class KueMetrics < Sensu::Plugin::Metric::CLI::Graphite
   option :scheme,
          long: "--scheme SCHEME",
-         description: "Metric naming scheme, text to prepend to $queue_type"
+         description: "Metric naming scheme, text to prepend to $queue_type",
          default: "#{Socket.gethostname}.kue"
 
   option :prefix,
